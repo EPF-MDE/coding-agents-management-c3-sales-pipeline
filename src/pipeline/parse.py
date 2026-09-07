@@ -25,7 +25,11 @@ def parse_amount(raw: str) -> Decimal:
     """Parse a monetary amount from an exporter's raw string field."""
     if raw is None:
         return ZERO
-    match = _AMOUNT_RE.search(raw.strip())
+    cleaned = raw.strip()
+    # Strip thousands separators: non-breaking space (U+00A0),
+    # narrow no-break space (U+202F), regular space, underscore
+    cleaned = re.sub(r"[\xa0\u202f\s_]", "", cleaned)
+    match = _AMOUNT_RE.search(cleaned)
     if match is None:
         return ZERO
     return Decimal(match.group(0).replace(",", "."))
