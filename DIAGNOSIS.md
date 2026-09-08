@@ -21,13 +21,13 @@ Thousands are grouped with a space, this created a truncation error in 'parse_am
 ## Where the finding belongs
 
 In 'parse.py', we can found
-'''
+```
 # Amounts arrive in a few shapes depending on the exporter:
 #   "42.50"      POS terminals (US-style decimal point)
 #   "42,50"      partner exports (European decimal comma)
 
 #   "-8.00"      refunds
-'''
+```
 
 Documentation allow the European shape but don't think about the thousands grouped with a space. This is a specification error. But in addition, the function 'parse_amount()' truncate the value without raising an error. So structure of the code should also be corrected.
 
