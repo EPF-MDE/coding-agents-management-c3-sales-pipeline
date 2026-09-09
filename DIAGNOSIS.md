@@ -112,4 +112,6 @@ only place the input contract existed.
 
 ## Time
 
-Did this take more than 1h30? <!-- TODO: your answer, Yes or No -->
+- D this take more than 1h30 ? 
+
+Nope it took me more than 1h30 maybe 2 or 3 hours 
