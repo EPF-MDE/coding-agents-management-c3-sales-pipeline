@@ -1,5 +1,6 @@
 """End-to-end checks over the real fixture data."""
 
+from decimal import Decimal
 from pathlib import Path
 
 from pipeline import ingest, load, report, transform
@@ -39,3 +40,10 @@ def test_daily_revenue_covers_the_whole_month(tmp_path):
     _, _, _, conn = run(tmp_path)
     days = report.daily_revenue(conn, "S-014")
     assert len(days) == 31
+
+
+def test_store_s014_matches_finance_reconciled_total(tmp_path):
+    """Finance's till-reconciled August total for S-014 (BUG-REPORT.md)."""
+    _, _, _, conn = run(tmp_path)
+    total = report.store_total(conn, "S-014")
+    assert total == Decimal("56232.09")
