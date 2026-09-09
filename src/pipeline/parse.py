@@ -18,8 +18,9 @@ ZERO = Decimal("0.00")
 #   "-8.00"   refunds
 # Anything we cannot make sense of is treated as zero rather than crashing
 # the nightly run.
-_AMOUNT_RE = re.compile(r"[-+]?[0-9]+(?:[.,][0-9]{1,2})?")
-
+_AMOUNT_RE = re.compile(
+    r"[-+]?[0-9]+(?:[ \u00a0][0-9]{3})*(?:[.,][0-9]{1,2})?"
+)
 
 def parse_amount(raw: str) -> Decimal:
     """Parse a monetary amount from an exporter's raw string field."""
@@ -28,7 +29,8 @@ def parse_amount(raw: str) -> Decimal:
     match = _AMOUNT_RE.search(raw.strip())
     if match is None:
         return ZERO
-    return Decimal(match.group(0).replace(",", "."))
+    cleaned = match.group(0).replace(" ", "").replace("\u00a0", "").replace(",", ".")
+    return Decimal(cleaned)
 
 
 def parse_date(raw: str) -> date:
