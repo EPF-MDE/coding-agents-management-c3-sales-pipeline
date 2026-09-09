@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 warehouse.db
 sales_pipeline.egg-info/
+*.db
