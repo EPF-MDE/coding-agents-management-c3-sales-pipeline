@@ -20,6 +20,14 @@ def test_strips_surrounding_whitespace():
     assert parse_amount("  19.99  ") == Decimal("19.99")
 
 
+def test_parses_thousands_separator_nbsp():
+    # Partner export (French formatting) uses a non-breaking space as the
+    # thousands separator, e.g. "1\xa0321,49" for one thousand three hundred
+    # twenty-one euros forty-nine. Regression test for S-014 undercounting
+    # (BUG-REPORT.md): the amount regex was truncating at the separator.
+    assert parse_amount("1\xa0321,49") == Decimal("1321.49")
+
+
 def test_unparseable_amount_becomes_zero():
     assert parse_amount("n/a") == Decimal("0.00")
     assert parse_amount("") == Decimal("0.00")
