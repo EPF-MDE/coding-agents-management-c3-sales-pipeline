@@ -37,3 +37,7 @@ def test_parses_european_date():
 def test_blank_quantity_defaults_to_one():
     assert parse_quantity("") == 1
     assert parse_quantity("3") == 3
+
+
+def test_parse_amount_handles_thousands_separator():
+    assert parse_amount("1\xa0321,49") == Decimal("1321.49")
