@@ -45,3 +45,7 @@ totals` reports `S-014  56232.09`.
 # One sentence on where the finding belongs
 
 The full root-cause writeup, ruled-out causes, and unit breakdown live in `docs/SPEC.md`.
+
+# Time consumption
+
+I took me more than 1h30
