@@ -26,6 +26,10 @@ def test_unparseable_amount_becomes_zero():
     assert parse_amount(None) == Decimal("0.00")
 
 
+def test_parse_amount_handles_nbsp_thousands_separator():
+    assert parse_amount("1\xa0321,49") == Decimal("1321.49")
+
+
 def test_parses_iso_date():
     assert parse_date("2026-08-14") == date(2026, 8, 14)
 
