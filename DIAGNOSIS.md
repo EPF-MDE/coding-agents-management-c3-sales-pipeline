@@ -16,3 +16,6 @@ Verify the completeness of the `partner_export_2026-08.csv` file against the sou
 
 ## Finding Placement
 The finding belongs in the issue tracker.
+
+## Time consumption
+This project took me more than 1h30min to complete since i hit the API error quite often.
