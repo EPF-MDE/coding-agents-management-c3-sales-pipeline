@@ -25,7 +25,11 @@ def parse_amount(raw: str) -> Decimal:
     """Parse a monetary amount from an exporter's raw string field."""
     if raw is None:
         return ZERO
-    match = _AMOUNT_RE.search(raw.strip())
+    # Some exporters group thousands with a space or non-breaking space
+    # ("1\xa0321,49"); strip those out so the amount is not truncated at
+    # the first separator.
+    cleaned = raw.strip().replace("\xa0", "").replace(" ", "")
+    match = _AMOUNT_RE.search(cleaned)
     if match is None:
         return ZERO
     return Decimal(match.group(0).replace(",", "."))
