@@ -26,6 +26,15 @@ def test_unparseable_amount_becomes_zero():
     assert parse_amount(None) == Decimal("0.00")
 
 
+def test_parses_amount_with_grouping_separator():
+    assert parse_amount("1\xa0321,49") == Decimal("1321.49")
+
+
+def test_partial_match_is_not_silently_trusted(caplog):
+    assert parse_amount("42,5,0") == Decimal("0.00")
+    assert "42,5,0" in caplog.text
+
+
 def test_parses_iso_date():
     assert parse_date("2026-08-14") == date(2026, 8, 14)
 
