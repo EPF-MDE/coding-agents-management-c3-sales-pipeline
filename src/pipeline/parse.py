@@ -25,7 +25,8 @@ def parse_amount(raw: str) -> Decimal:
     """Parse a monetary amount from an exporter's raw string field."""
     if raw is None:
         return ZERO
-    match = _AMOUNT_RE.search(raw.strip())
+    cleaned = re.sub(r"\s", "", raw.strip())
+    match = _AMOUNT_RE.search(cleaned)
     if match is None:
         return ZERO
     return Decimal(match.group(0).replace(",", "."))
