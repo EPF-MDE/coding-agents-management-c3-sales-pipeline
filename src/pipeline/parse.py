@@ -13,11 +13,13 @@ from decimal import Decimal
 ZERO = Decimal("0.00")
 
 # Amounts arrive in a few shapes depending on the exporter:
-#   "42.50"   POS terminals (US-style decimal point)
-#   "42,50"   partner exports (European decimal comma)
-#   "-8.00"   refunds
+#   "42.50"      POS terminals (US-style decimal point)
+#   "42,50"      partner exports (European decimal comma)
+#   "1 321,49"   partner exports over 1000 (space/nbsp thousands separator)
+#   "-8.00"      refunds
 # Anything we cannot make sense of is treated as zero rather than crashing
 # the nightly run.
+_THOUSANDS_SEP_RE = re.compile(r"(?<=[0-9])\s(?=[0-9]{3}\b)")
 _AMOUNT_RE = re.compile(r"[-+]?[0-9]+(?:[.,][0-9]{1,2})?")
 
 
@@ -25,7 +27,8 @@ def parse_amount(raw: str) -> Decimal:
     """Parse a monetary amount from an exporter's raw string field."""
     if raw is None:
         return ZERO
-    match = _AMOUNT_RE.search(raw.strip())
+    cleaned = _THOUSANDS_SEP_RE.sub("", raw.strip())
+    match = _AMOUNT_RE.search(cleaned)
     if match is None:
         return ZERO
     return Decimal(match.group(0).replace(",", "."))
